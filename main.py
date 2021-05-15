@@ -87,7 +87,7 @@ def handler(event, context):
         rank = analysis_tweet(tweets)
         return {
             'statusCode': 200,
-            'body': json.dumps(rank)
+            'body': json.dumps(rank, ensure_ascii=False)
         }
 
 
