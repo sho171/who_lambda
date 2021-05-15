@@ -1,0 +1,17 @@
+FROM python:3.8-slim
+
+RUN apt-get update -y
+RUN apt-get install -y mecab libmecab-dev mecab-ipadic-utf8 git make curl xz-utils file gcc g++ sudo
+RUN pip install --upgrade pip
+RUN pip install mecab neologdn tweepy emoji
+
+WORKDIR /myapp
+COPY . /myapp
+
+# neologd
+RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git && \
+cd mecab-ipadic-neologd && \
+./bin/install-mecab-ipadic-neologd -n -y && \
+echo `mecab-config --dicdir`"/mecab-ipadic-neologd" > /myapp/mecab_path
+
+CMD ['lambda_function.lambda_handler']
